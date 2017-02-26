@@ -2,7 +2,7 @@
 
 ## Terminal
 
-![Screen Shot](mac.jpg)
+![macos](macos.jpg)
 
 ## Atom
 
