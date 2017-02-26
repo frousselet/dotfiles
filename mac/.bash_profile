@@ -1,3 +1,12 @@
+# ------------------------------------------------------------------------------
+# -- @Author:             François Rousselet <frousselet>
+# -- @Date:               2017-02-21T22:42:22+01:00
+# -- @Email:              francois@rousselet.info
+# -- @Filename:           .bash_profile
+# -- @Last modified by:   frousselet
+# -- @Last modified time: 2017-02-26T19:44:56+01:00
+# ------------------------------------------------------------------------------
+
 # Initialize
 source ~/.bash-preexec.sh
 
