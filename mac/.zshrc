@@ -15,7 +15,15 @@ export TERM="xterm-256color"
 # ZSH_THEME="robbyrussell"
 # ZSH_THEME="amuse"
 
-PATH="/Users/frousselet/.scala/bin/:/usr/local/share/python/:$PATH"
+export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+
+
+# Add Python to path
+PATH="/usr/local/share/python/:$PATH"
+
+# Add Scala to path
+SCALA_HOME="/Users/frousselet/.scala/"
+PATH="$SCALA_HOME/bin:$PATH"
 
 ZSH_THEME="robbyrussell"
 
