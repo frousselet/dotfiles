@@ -1,11 +1,5 @@
-# ------------------------------------------------------------------------------
-# -- @Author:             François Rousselet <frousselet>
-# -- @Date:               2017-02-21T22:40:54+01:00
-# -- @Email:              francois@rousselet.info
-# -- @Filename:           .zshrc
-# -- @Last modified by:   frousselet
-# -- @Last modified time: 2017-02-26T19:45:39+01:00
-# ------------------------------------------------------------------------------
+
+
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -21,9 +15,9 @@ export TERM="xterm-256color"
 # ZSH_THEME="robbyrussell"
 # ZSH_THEME="amuse"
 
-PATH="/usr/local/share/python/:$PATH"
+PATH="/Users/frousselet/.scala/bin/:/usr/local/share/python/:$PATH"
 
-# ZSH_THEME="lambda-pure"
+ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -106,4 +100,4 @@ alias sy1='ssh sy1.francoisrousselet.fr'
 
 # tmux source ~/.tmux.conf &
 
-source /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+# source /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
