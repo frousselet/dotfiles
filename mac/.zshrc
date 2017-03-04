@@ -1,3 +1,7 @@
+sw_vers
+
+printf ""
+
 # ZSH CONFIG
 export ZSH=/Users/frousselet/.oh-my-zsh
 export TERM="xterm-256color"
