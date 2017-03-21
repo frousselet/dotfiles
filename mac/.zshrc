@@ -16,7 +16,7 @@ antigen apply
 export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
 
 # PYTHON
-PATH="/usr/local/share/python/:$PATH"
+PATH="/usr/local/share/python/:/usr/local/bin/python3:$PATH"
 
 # SCALA
 SCALA_HOME="/Users/frousselet/.scala/"
