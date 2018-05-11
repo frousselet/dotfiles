@@ -1,0 +1,13 @@
+image: debian
+
+stages:
+  - Mirror
+
+github:
+  stage: Mirror
+  only:
+    - master
+  before_script:
+    - apt update && apt -y install git
+  script:
+    - git push --mirror https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/frousselet/dotfiles.git
