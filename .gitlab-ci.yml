@@ -17,6 +17,6 @@ github:
     - rm -rf $HOME/gittmp/.git
     - cd $HOME
     - git clone --mirror https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/frousselet/dotfiles.git
-    - cd dotfiles
+    - cd dotfiles.git
     - cp -rf $HOME/gittmp/* .
     - git push --mirror https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/frousselet/dotfiles.git
