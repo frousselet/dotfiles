@@ -1,4 +1,3 @@
 #!/bin/sh
 
-/usr/bin/curl -s ifconfig.co/json | /usr/bin/jq '.ip,.asn_org,.city' | /usr/bin/tr -d '\"' | /usr/bin/tr -s '\n' ' ' | /usr/bin/tr [a-z] [A-Z] > /home/frousselet/.ipinfo
-
+/usr/bin/curl -s ifconfig.co/json | /usr/bin/jq '.ip,.asn_org,.city,.country' | /usr/bin/tr -s '\n' ' ' | /usr/bin/awk 'BEGIN {FS = "\""}; {print $2 " • " $4 " ("$6")"}' | /usr/bin/tr '[a-z]' '[A-Z]'
