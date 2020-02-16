@@ -15,6 +15,8 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
+alias ipinfo="curl -s ifconfig.co/json | jq"
+
 export PATH="$HOME/.tfenv/bin:$PATH"
 
 eval $(thefuck --alias)
