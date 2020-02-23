@@ -2,7 +2,7 @@ export PAGER="most"
 export ZSH="/home/frousselet/.oh-my-zsh"
 
 # ZSH_THEME="evan"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="evan"
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=black,bg=grey"
 
