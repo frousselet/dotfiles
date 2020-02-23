@@ -20,7 +20,7 @@ alias ipinfo="curl -s ifconfig.co/json | jq"
 
 export PATH="$HOME/.tfenv/bin:$PATH"
 
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 
 if [ -f '/tmp/google-cloud-sdk/path.zsh.inc' ]; then . '/tmp/google-cloud-sdk/path.zsh.inc'; fi
 if [ -f '/tmp/google-cloud-sdk/completion.zsh.inc' ]; then . '/tmp/google-cloud-sdk/completion.zsh.inc'; fi
