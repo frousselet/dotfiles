@@ -1,27 +1,22 @@
-
 // To view the default settings, hold "alt" while clicking on the "Settings" button.
 // For documentation on these settings, see: https://aka.ms/terminal-documentation
-
 {
     "$schema": "https://aka.ms/terminal-profiles-schema",
-
-    "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-
-    "profiles":
-    {
-        "defaults":
-        {
-		 "fontSize": 11,
-		 "colorScheme": "Campbell",
-		 "useAcrylic": true,
-		 "acrylicOpacity": 0.95
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "profiles": {
+        "defaults": {
+            "fontSize": 10,
+            "fontFace": "Cascadia Code PL",
+            "colorScheme": "Campbell",
+            "useAcrylic": false,
+            "cursorShape": "underscore",
+            "acrylicOpacity": 0.95
         },
-        "list":
-        [
+        "list": [
             {
                 // Make changes here to the powershell.exe profile
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "name": "Windows PowerShell",
+                "name": "PowerShell",
                 "commandline": "powershell.exe",
                 "hidden": false
             },
@@ -43,15 +38,18 @@
                 "hidden": false,
                 "name": "Ubuntu",
                 "source": "Windows.Terminal.Wsl"
+            },
+            {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "name": "PowerShell Core",
+                "source": "Windows.Terminal.PowershellCore"
             }
         ]
     },
-
     // Add custom color schemes to this array
     "schemes": [],
-
     // Add any keybinding overrides to this array.
     // To unbind a default keybinding, set the command to "unbound"
     "keybindings": []
 }
-
