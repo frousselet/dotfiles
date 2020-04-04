@@ -1,23 +1,11 @@
 export PAGER="most"
 export ZSH="$HOME/.oh-my-zsh"
 
-# RLST-LT :: Users/frousselet »
-# ZSH_THEME="evan"
-
-# ➜  frousselet
-# ZSH_THEME="robbyrussell"
-
-# RLST-LT :: c/Users/frousselet »
-# ZSH_THEME="afowler"
-
-# @RLST-LT ➜ frousselet
-# ZSH_THEME="nebirhos"
-
 ZSH_DISABLE_COMPFIX=true
 
 autoload -U colors && colors
 
-PROMPT="$fg[grey]%B%2~ ::: %M$reset_color %(!.$fg[red].)%n $fg[cyan]=>$reset_color%b "
+PROMPT="$fg[grey]%B%M ::: %2~$reset_color %(!.$fg[red].)%n $fg[cyan]=>$reset_color%b "
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=black,bg=grey"
 
@@ -34,9 +22,4 @@ fi
 alias ipinfo="curl -s ifconfig.co/json | jq"
 
 export PATH="$HOME/.tfenv/bin:$PATH"
-
-# eval $(thefuck --alias)
-
-# if [ -f '/tmp/google-cloud-sdk/path.zsh.inc' ]; then . '/tmp/google-cloud-sdk/path.zsh.inc'; fi
-# if [ -f '/tmp/google-cloud-sdk/completion.zsh.inc' ]; then . '/tmp/google-cloud-sdk/completion.zsh.inc'; fi
 
