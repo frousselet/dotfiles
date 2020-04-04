@@ -1,5 +1,5 @@
 export PAGER="most"
-export ZSH="/home/frousselet/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # RLST-LT :: Users/frousselet »
 # ZSH_THEME="evan"
