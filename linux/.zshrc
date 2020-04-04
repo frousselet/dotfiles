@@ -9,7 +9,7 @@ ZSH_DISABLE_COMPFIX=true
 
 autoload -U colors && colors
 
-PS1=$'%{$fg_bold[grey]%}%M ::: %2~ %(!.%{$fg[red]%}.%{$reset_color%})%n %{$fg[cyan]%}=>%{$reset_color%} '
+PS1=$'%{$fg_bold[grey]%}%M::: %2~%{$reset_color%} %(!.%{$fg_bold[red]%}.%{$fg_bold[white]%})%n%{$reset_color%} %{$fg[cyan]%}=>%{$reset_color%} '
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=black,bg=grey"
 
