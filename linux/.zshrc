@@ -13,11 +13,15 @@ export ZSH="/home/frousselet/.oh-my-zsh"
 # @RLST-LT ➜ frousselet
 # ZSH_THEME="nebirhos"
 
-PROMPT="%B$USER :: %2~ => %b"
+ZSH_DISABLE_COMPFIX=true
+
+autoload -U colors && colors
+
+PROMPT="$fg[grey]%B%2~ ::: %M$reset_color %(!.$fg[red].)%n $fg[cyan]=>$reset_color%b "
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=black,bg=grey"
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting node npm terraform vscode gitignore)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
