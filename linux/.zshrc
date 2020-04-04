@@ -1,11 +1,15 @@
 export PAGER="most"
+
 export ZSH="$HOME/.oh-my-zsh"
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 ZSH_DISABLE_COMPFIX=true
 
 autoload -U colors && colors
 
-PROMPT="$fg[grey]%B%M ::: %2~$reset_color %(!.$fg[red].)%n $fg[cyan]=>$reset_color%b "
+PS1=$'%{$fg_bold[grey]%}%M ::: %2~ %(!.%{$fg[red]%}.%{$reset_color%})%n %{$fg[cyan]%}=>%{$reset_color%} '
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=black,bg=grey"
 
@@ -22,4 +26,3 @@ fi
 alias ipinfo="curl -s ifconfig.co/json | jq"
 
 export PATH="$HOME/.tfenv/bin:$PATH"
-
