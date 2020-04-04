@@ -13,7 +13,7 @@ export ZSH="/home/frousselet/.oh-my-zsh"
 # @RLST-LT ➜ frousselet
 # ZSH_THEME="nebirhos"
 
-PROMPT="%B$USER%{$fg[grey]%}@%M%{$reset_color%} :: %1~ => %b"
+PROMPT="%B$USER :: %2~ => %b"
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=black,bg=grey"
 
