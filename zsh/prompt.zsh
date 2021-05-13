@@ -8,7 +8,7 @@ docker_version() {
 node_version() {
 	if [ -f "package.json" ]
 	then
-		echo " [node:$(node -v | sed 's/v//g')]"
+		echo " [node:$(node -v | sed 's/v//g')] [$(jq -r '.name' < package.json):$(jq -r '.version' < package.json)]"
 	fi
 }
 
