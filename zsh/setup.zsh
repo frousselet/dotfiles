@@ -1,4 +1,7 @@
 ZSH_DISABLE_COMPFIX=true
 setopt PROMPT_SUBST
-export PAGER="most"
+
+if command -v most > /dev/null; then
+    export PAGER="most"
+fi
 export ZSH="$HOME/.oh-my-zsh"
