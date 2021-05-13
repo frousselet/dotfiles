@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/bin/curl -s ifconfig.co/json | /usr/bin/jq '.ip,.asn_org,.country' | /usr/bin/tr -s '\n' ' ' | /usr/bin/awk 'BEGIN {FS = "\""}; {print $2 " • " $4 " ("$6")"}' | /usr/bin/tr '[a-z]' '[A-Z]' >> $HOME/.ipinfo
