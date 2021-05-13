@@ -1,4 +1,4 @@
-DOTCONFPATH="$HOME/.dotfiles/zsh"
+export DOTCONFPATH="$HOME/.dotfiles/zsh"
 
 source "$DOTCONFPATH/.setup"
 source "$DOTCONFPATH/.prompt"
