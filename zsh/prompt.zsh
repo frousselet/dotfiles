@@ -80,4 +80,4 @@ preexec() {
 	printf "\n"
 }
 
-PS1=$'\n\n%{$reset_color%}%{$fg[black]%}%(!.%{$bg[red]%}.%{$bg[yellow]%})%n%{$reset_color%} %(2~|%(!.%{$fg[red]%}.%{$fg[yellow]%})⋯%{$reset_color%}/%1~|%~)%(!.%{$fg_bold[red]%}.%{$fg_bold[yellow]%})$(git_branch)$(docker_version)$(terraform_version)$(aws_profile)$(python_version)$(node_version)%{$reset_color%}\n%(?.%{$fg_bold[white]%}.%{$fg_bold[red]%})→%{$reset_color%} '
+PS1=$'\n\n%{$reset_color%}%(!.%{$fg_bold[black]%}%{$bg[red]%}.%{$fg_bold[black]%}%{$bg[white]%})%n%{$reset_color%} %(2~|%(!.%{$fg[red]%}.%{$fg[cyan]%})⋯%{$reset_color%}/%1~|%~)%(!.%{$fg_bold[red]%}.%{$fg_bold[cyan]%})$(git_branch)$(docker_version)$(terraform_version)$(aws_profile)$(python_version)$(node_version)%{$reset_color%}\n%(?.%{$fg_bold[white]%}.%{$fg_bold[red]%})➜%{$reset_color%} '
