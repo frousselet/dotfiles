@@ -13,7 +13,7 @@ node_version() {
 }
 
 python_version() {
-	py_file_count="$(find . -type f -name '*.py' -maxdepth 1)"
+	py_file_count="$(find . -maxdepth 1 -type f -name '*.py')"
 	if [ $py_file_count ]
 	then
 		echo " [python:$(python --version | sed 's/Python //g')]"
@@ -21,7 +21,7 @@ python_version() {
 }
 
 terraform_version() {
-	tf_file_count="$(find . -type f -name '*.tf' -maxdepth 1)"
+	tf_file_count="$(find .  -maxdepth 1 -type f -name '*.tf')"
 	if [ $tf_file_count ]
 	then
 		echo " [terraform:$(tfenv version-name 2> /dev/null)]"
