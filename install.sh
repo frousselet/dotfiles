@@ -6,7 +6,14 @@ GITHUB="https://github.com/frousselet/dotfiles.git"
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if [[ ! command -v brew > /dev/null ]]; then
         printf "Installing Homebrew...\n"
-        bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        if command -v curl > /dev/null; then
+            bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        elif command -v wget > /dev/null; then
+            bash -c "$(wget https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -O -)"
+        else
+            printf "curl or wget not installed!\n"
+            exit 1
+        fi
     fi
 fi
 

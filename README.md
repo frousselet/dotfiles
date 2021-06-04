@@ -1,10 +1,15 @@
 # Dotfiles
 
-```shell
-# Clone repository
-git clone https://github.com/frousselet/dotfiles.git $HOME/.dotfiles
+## Installation
 
-# Install
-# !!!!!! This script is made for my own usage. Read it before executing it. !!!!!
+With cURL:
+
+```shell
 curl -fsSL https://raw.github.com/frousselet/dotfiles/master/install.sh
+```
+
+With Wget:
+
+```shell
+wget https://raw.github.com/frousselet/dotfiles/master/install.sh -O -
 ```
