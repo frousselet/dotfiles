@@ -16,7 +16,7 @@ if [[ ! command -v git > /dev/null ]]; then
     if [[ "$OSTYPE" == "darwin"* ]]; then
         brew install git
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        if [[ lsb_release -d | grep "ubuntu"]] || [[ lsb_release -d | grep "ubuntu" ]]; then
+        if [[ lsb_release -d | grep "ubuntu"]] || [[ lsb_release -d | grep "debian" ]]; then
             sudo apt-get -y install git
         else
             printf "git not installed!\n"
