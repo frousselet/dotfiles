@@ -43,5 +43,7 @@
     "window.titleBarStyle": "native",
     "redhat.telemetry.enabled": true,
     "terminal.integrated.tabs.enabled": true,
-    "editor.fontFamily": "Fira Code"
+    "editor.fontFamily": "Fira Code",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
 }
