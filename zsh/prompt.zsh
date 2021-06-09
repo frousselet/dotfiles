@@ -58,7 +58,7 @@ git_branch() {
                 fi
 		if [ $gs_A ]
                 then
-                        gb="$gb/‥"
+                        gb="$gb/⋯"
                 fi
 		if [ $gs_P ]
                 then
