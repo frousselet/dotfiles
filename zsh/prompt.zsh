@@ -60,21 +60,21 @@ git_branch() {
 				gb="$gb/+"
 			fi
 			if [ $gs_M ]
-					then
-							gb="$gb/~"
-					fi
+			then
+				gb="$gb/~"
+			fi
 			if [ $gs_D ]
-					then
-							gb="$gb/-"
-					fi
+			then
+				gb="$gb/-"
+			fi
 			if [ $gs_A ]
-					then
-							gb="$gb/⋯"
-					fi
+			then
+				gb="$gb/⋯"
+			fi
 			if [ $gs_P ]
-					then
-							gb="$gb/↑"
-					fi
+			then
+				gb="$gb/↑"
+			fi
 			echo " [git:$gb]"
 		fi
 	fi
