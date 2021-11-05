@@ -17,6 +17,7 @@ source "$DOTCONFPATH/ruby.zsh"
 source "$DOTCONFPATH/pyenv.zsh"
 source "$DOTCONFPATH/gcloud.zsh"
 source "$DOTCONFPATH/plugins.zsh"
+source "$DOTCONFPATH/alias.zsh"
 source "$DOTCONFPATH/extra.zsh"
 
 if [[ -d "$HOME/.zsh_extra/post" ]]

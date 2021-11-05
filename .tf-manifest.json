@@ -1,0 +1,14 @@
+{
+  "init": {
+    "backend_config": [
+      {
+        "backend": "redis",
+        "config": {
+          "host": "localhost",
+          "port": 6379,
+          "db": 0
+        }
+      }
+    ]
+  }
+}
