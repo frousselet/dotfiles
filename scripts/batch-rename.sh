@@ -13,7 +13,7 @@
 
 
 
-show_spinner()
+_spin()
 {
   local -r pid="${1}"
   local -r delay='0.1'
@@ -31,7 +31,7 @@ show_spinner()
   exit $?
 }
 
-rename()(
+_rename()(
 
   if [ -z "$1" ]; then
 
@@ -86,5 +86,5 @@ rename()(
   exit 0
 )
 
-rename $1 &
-show_spinner "$!"
+_rename $1 &
+_spin "$!"
