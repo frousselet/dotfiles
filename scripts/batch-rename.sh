@@ -27,7 +27,7 @@ _spin()
     printf "\r"
   done
 
-  wait $1
+  wait "$1"
   exit $?
 }
 
@@ -86,5 +86,5 @@ _rename()(
   exit 0
 )
 
-_rename $1 &
+_rename "$1" &
 _spin "$!"
