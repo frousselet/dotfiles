@@ -6,6 +6,10 @@ if command -v git > /dev/null; then
     plugins+=git
 fi
 
+if command -v aws > /dev/null; then
+    plugins+=aws
+fi
+
 if command -v pyenv > /dev/null; then
     plugins+=pyenv
 fi

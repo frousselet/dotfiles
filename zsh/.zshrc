@@ -1,3 +1,5 @@
+echo "" && neofetch
+
 export DOTCONFPATH="$HOME/.dotfiles/zsh"
 
 if [[ -d "$HOME/.zsh_extra/pre" ]]
