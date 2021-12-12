@@ -12,6 +12,13 @@
 ##
 
 
+if [ ! command -v exiftool >/dev/null 2>&1 ]; then
+    echo -e "[ ❌ ] Exiftool not food."
+    echo -e "       Please install it and try again: https://www.sno.phy.queensu.ca/~phil/exiftool/install.html"
+    echo -e "       [Debian] apt install exiftool"
+    echo -e "       [MacOS]  brew install exiftool"
+    exit 65
+fi
 
 _spin()
 {
