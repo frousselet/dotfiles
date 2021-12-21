@@ -13,3 +13,11 @@ alias tf.c="rm -rf .terraform*"
 ####
 
 alias git.t="git log --graph --all --decorate --oneline --date=short"
+
+##########
+# MISC
+####
+
+batchrename() {
+  bash /Users/${USER}/.dotfiles/scripts/batch-rename.sh "$@"
+}
