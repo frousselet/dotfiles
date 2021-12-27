@@ -21,3 +21,7 @@ alias git.t="git log --graph --all --decorate --oneline --date=short"
 batchrename() {
   bash /Users/${USER}/.dotfiles/scripts/batch-rename.sh "$@"
 }
+
+wol() {
+  wakeonlan "$@"
+}
