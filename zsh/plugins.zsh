@@ -48,6 +48,11 @@ then
     plugins+=zsh-syntax-highlighting
 fi
 
+if [[ -d "$ZSH_CUSTOM/plugins/lxd-completion-zsh" ]]
+then
+    plugins+=lxd-completion-zsh
+fi
+
 plugins+=genpass
 
 SHOW_AWS_PROMPT=false
