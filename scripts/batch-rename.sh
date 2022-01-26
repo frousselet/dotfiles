@@ -38,6 +38,40 @@ _spin()
   exit $?
 }
 
+_proceed_file() (
+
+  raw_file=$2
+
+  extention=$(echo $raw_file | awk -F. '{print (NF>1?$NF:"no extension")}')
+  if [ $extention != "dop" ]; then
+
+    if [ $3 -lt 10 ]; then
+      incremental="000${3}"
+    elif [ $3 -lt 100 ]; then
+      incremental="00${3}"
+    elif [ $3 -lt 1000 ]; then
+      incremental="0${3}"
+    else
+      incremental=$3
+    fi
+
+    raw_created_date=$(exiftool -CreateDate "$raw_file" | cut -c35- | sed 's/ /:/g')
+    created_year=$(echo "$raw_created_date" | cut -d ":" -f "1")
+    created_mounth=$(echo "$raw_created_date" | cut -d ":" -f "2")
+    created_day=$(echo "$raw_created_date" | cut -d ":" -f "3")
+    created_hour=$(echo "$raw_created_date" | cut -d ":" -f "4")
+    created_minute=$(echo "$raw_created_date" | cut -d ":" -f "5")
+    created_second=$(echo "$raw_created_date" | cut -d ":" -f "6")
+
+    mv "$raw_file" "${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}"
+    mv "$raw_file.dop" "${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}.dop" 2>/dev/null | true
+
+    return "$file_count"
+
+  fi
+
+)
+
 _rename()(
 
   if [ -z "$1" ]; then
@@ -57,35 +91,21 @@ _rename()(
 
   fi
 
-  file_count=0
+  file_count=1
 
   for raw_file in "$1"/*; do
+
     extention=$(echo $raw_file | awk -F. '{print (NF>1?$NF:"no extension")}')
+
     if [ $extention != "dop" ]; then
-      # printf "."
+
+      _proceed_file "$1" "$raw_file" "$file_count" &
       file_count=$(( $file_count + 1 ))
 
-      if [ $file_count -lt 10 ]; then
-        incremental="000${file_count}"
-      elif [ $file_count -lt 100 ]; then
-        incremental="00${file_count}"
-      elif [ $file_count -lt 1000 ]; then
-        incremental="0${file_count}"
-      else
-        incremental=$file_count
-      fi
-
-      raw_created_date=$(exiftool -CreateDate "$raw_file" | cut -c35- | sed 's/ /:/g')
-      created_year=$(echo "$raw_created_date" | cut -d ":" -f "1")
-      created_mounth=$(echo "$raw_created_date" | cut -d ":" -f "2")
-      created_day=$(echo "$raw_created_date" | cut -d ":" -f "3")
-      created_hour=$(echo "$raw_created_date" | cut -d ":" -f "4")
-      created_minute=$(echo "$raw_created_date" | cut -d ":" -f "5")
-      created_second=$(echo "$raw_created_date" | cut -d ":" -f "6")
-
-      mv $raw_file "${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}"
-      mv "$raw_file.dop" "${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}.dop" 2>/dev/null | true
     fi
+
+    wait
+
   done
 
   echo -e "\r[ 🍻 ] Done! ${file_count} files renamed."
