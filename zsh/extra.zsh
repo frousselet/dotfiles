@@ -2,4 +2,6 @@
 source $ZSH/oh-my-zsh.sh
 export GPG_TTY=$(tty)
 
-source $HOME/.cargo/env
+if command -v cargo > /dev/null; then
+  source $HOME/.cargo/env
+fi
