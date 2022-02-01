@@ -28,7 +28,7 @@ _spin()
   local temp
   while ps a | awk '{print $1}' | grep -q "${pid}"; do
     temp="${spinstr#?}"
-    printf "[ %c ] Renaming files..." "${spinstr}"
+    printf "[ %c ] Processing files..." "${spinstr}"
     spinstr=${temp}${spinstr%"${temp}"}
     sleep "${delay}"
     printf "\r"
@@ -41,17 +41,18 @@ _spin()
 _proceed_file() (
 
   raw_file=$2
+  file_count=$((${3} + 1))
 
   extention=$(echo $raw_file | awk -F. '{print (NF>1?$NF:"no extension")}')
 
-  if [ $3 -lt 10 ]; then
-    incremental="000${3}"
-  elif [ $3 -lt 100 ]; then
-    incremental="00${3}"
-  elif [ $3 -lt 1000 ]; then
-    incremental="0${3}"
+  if [ ${file_count} -lt 10 ]; then
+    incremental="000${file_count}"
+  elif [ ${file_count} -lt 100 ]; then
+    incremental="00${file_count}"
+  elif [ ${file_count} -lt 1000 ]; then
+    incremental="0${file_count}"
   else
-    incremental=$3
+    incremental=${file_count}
   fi
 
   raw_created_date=$(exiftool -CreateDate "$raw_file" | cut -c35- | sed 's/ /:/g')
@@ -62,11 +63,19 @@ _proceed_file() (
   created_minute=$(echo "$raw_created_date" | cut -d ":" -f "5")
   created_second=$(echo "$raw_created_date" | cut -d ":" -f "6")
 
-  mv "$raw_file" "${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}"
-  mv "$raw_file.dop" "${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}.dop" 2>/dev/null | true
+  new_name="${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}"
 
-  return "$file_count"
+  if [ $raw_file != $new_name ]; then
+    mv "${raw_file}" "${new_name}"
+    mv "${raw_file}.dop" "${new_name}.dop" 2>/dev/null | true
 
+    printf "\r"
+    echo "${raw_file} -> ${new_name}"
+
+    return 1
+  fi
+
+  return 0
 )
 
 _rename() (
@@ -88,7 +97,8 @@ _rename() (
 
   fi
 
-  file_count=1
+  file_count=0
+  renamed_count=0
 
   for raw_file in "$1"/*; do
 
@@ -96,8 +106,10 @@ _rename() (
 
     if [ $extention != "dop" ]; then
 
-      _proceed_file "$1" "$raw_file" "$file_count" &
+      _proceed_file "$1" "$raw_file" "$file_count"
+      add_to_count=$?
       file_count=$(( $file_count + 1 ))
+      renamed_count=$(( $renamed_count + $add_to_count ))
 
     fi
 
@@ -105,7 +117,11 @@ _rename() (
 
   done
 
-  echo -e "\r[ 🍻 ] Done! ${file_count} files renamed."
+  if [ $renamed_count -gt 0 ]; then
+    echo -e "\r\n[ 🍻 ] Done! ${renamed_count} files renamed."
+  else
+    echo -e "\r[ 🍻 ] Done! Nothing to rename."
+  fi
 
   exit 0
 )
