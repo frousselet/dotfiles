@@ -57,6 +57,11 @@ then
     plugins+=lxd-completion-zsh
 fi
 
+if [[ -d "$ZSH_CUSTOM/plugins/wakatime" ]]
+then
+    plugins+=wakatime
+fi
+
 plugins+=genpass
 
 SHOW_AWS_PROMPT=false

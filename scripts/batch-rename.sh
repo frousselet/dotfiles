@@ -42,6 +42,9 @@ _proceed_file() (
 
   raw_file=$2
   file_count=$((${3} + 1))
+  basename=$(basename -- "$1")
+
+  file_md5=$(md5 -q "${raw_file}" | cut -c1-4 | tr '[:lower:]' '[:upper:]')
 
   extention=$(echo $raw_file | awk -F. '{print (NF>1?$NF:"no extension")}')
 
@@ -63,9 +66,9 @@ _proceed_file() (
   created_minute=$(echo "$raw_created_date" | cut -d ":" -f "5")
   created_second=$(echo "$raw_created_date" | cut -d ":" -f "6")
 
-  new_name="${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}_$(basename -- $1).${extention}"
+  new_name="${1}/${created_year}-${created_mounth}${created_day}-${created_hour}${created_minute}-${incremental}-${file_md5}-$(echo "$basename" | sed -e 's/\\//g' | sed -e 's/ //g' | sed -e 's/-//g' | cut -c1-6 | tr '[:lower:]' '[:upper:]').${extention}"
 
-  if [ $raw_file != $new_name ]; then
+  if [ "$raw_file" != "$new_name" ]; then
     mv "${raw_file}" "${new_name}"
     mv "${raw_file}.dop" "${new_name}.dop" 2>/dev/null | true
 
