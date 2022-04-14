@@ -25,3 +25,10 @@ batchrename() {
 wol() {
   wakeonlan "$@"
 }
+
+update_dotfiles() {
+  cd ${DOTCONFPATH}/..
+  git pull
+  printf "Moved back to directory "
+  cd -
+}
