@@ -12,3 +12,7 @@ if [[ -f "/opt/homebrew/bin/terraform" ]]
 then
   complete -o nospace -C /opt/homebrew/bin/terraform terraform
 fi
+
+if command -v fuck > /dev/null; then
+  eval $(thefuck --alias)
+fi
