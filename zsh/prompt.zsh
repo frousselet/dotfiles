@@ -16,6 +16,16 @@ node_version() {
 	fi
 }
 
+go_version() {
+	if command -v go > /dev/null; then
+		go_file_count="$(find . -maxdepth 1 -type f -name '*.go')"
+		if [ $go_file_count ]
+		then
+			echo " [go:$(go version | cut -d " " -f 3 | cut -c 3-)]"
+		fi
+	fi
+}
+
 python_version() {
 	if command -v python > /dev/null; then
 		py_file_count="$(find . -maxdepth 1 -type f -name '*.py')"
@@ -103,4 +113,4 @@ preexec() {
 	printf "\n"
 }
 
-PS1=$'\n\n%{$reset_color%}%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(?.. %{$fg[red]%}[%?]%{$reset_color%})%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(aws_profile)$(terraform_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B->%b%{$reset_color%} '
+PS1=$'\n\n%{$reset_color%}%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(?.. %{$fg[red]%}[%?]%{$reset_color%})%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(aws_profile)$(terraform_version)$(go_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B->%b%{$reset_color%} '
