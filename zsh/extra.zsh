@@ -2,7 +2,8 @@
 source $ZSH/oh-my-zsh.sh
 export GPG_TTY=$(tty)
 
-if command -v cargo > /dev/null; then
+if [[ -f "$HOME/.cargo/env" ]]
+then
   source $HOME/.cargo/env
 fi
 

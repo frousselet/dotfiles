@@ -15,6 +15,11 @@ alias tf.c="rm -rf .terraform*"
 alias git.t="git log --graph --all --decorate --oneline --date=short"
 
 ##########
+# LOCALSTACK AWS CLI
+####
+alias awsl="aws --endpoint-url=http://localhost:4566"
+
+##########
 # MISC
 ####
 
