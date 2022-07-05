@@ -2,11 +2,21 @@
 # TERRAFORM
 ####
 
-alias tf.u="tfenv install latest && tfenv use latest"
-alias tf.i="terraform init"
-alias tf.p="terraform plan"
-alias tf.a="terraform apply"
-alias tf.c="rm -rf .terraform*"
+if command -v terraform > /dev/null; then
+  alias tf.u="tfenv install latest && tfenv use latest"
+  alias tf.i="terraform init"
+  alias tf.p="terraform plan"
+  alias tf.a="terraform apply"
+  alias tf.c="rm -rf .terraform*"
+fi
+
+##########
+# BREW
+####
+
+if command -v brew > /dev/null; then
+  alias br.u="brew update && brew upgrade && brew autoremove"
+fi
 
 ##########
 # GIT
@@ -17,7 +27,10 @@ alias git.t="git log --graph --all --decorate --oneline --date=short"
 ##########
 # LOCALSTACK AWS CLI
 ####
-alias awsl="aws --endpoint-url=http://localhost:4566"
+
+if command -v aws > /dev/null; then
+  alias awsl="aws --endpoint-url=http://localhost:4566"
+fi
 
 ##########
 # MISC
