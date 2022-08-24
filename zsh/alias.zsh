@@ -1,4 +1,12 @@
 ##########
+# PYTHON
+####
+
+if command -v python3 > /dev/null; then
+  alias python='python3'
+fi
+
+##########
 # TERRAFORM
 ####
 
@@ -16,6 +24,7 @@ fi
 
 if command -v brew > /dev/null; then
   alias br.u="brew update && brew upgrade && brew autoremove"
+  alias br.i="brew install"
 fi
 
 ##########

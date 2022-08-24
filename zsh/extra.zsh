@@ -17,3 +17,8 @@ fi
 if command -v fuck > /dev/null; then
   eval $(thefuck --alias)
 fi
+
+if [[ -d "/Library/TeX/texbin" ]]
+then
+  export PATH=$PATH:/Library/TeX/texbin
+fi

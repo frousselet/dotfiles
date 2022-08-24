@@ -11,7 +11,7 @@ node_version() {
 	if command -v node > /dev/null; then
 		if [ -f "package.json" ]
 		then
-			echo " [node:$(node -v | sed 's/v//g')] [$(jq -r '.name' < package.json):$(jq -r '.version' < package.json)]"
+			echo " %B[node:$(node -v | sed 's/v//g')] [$(jq -r '.name' < package.json):$(jq -r '.version' < package.json)]%b"
 		fi
 	fi
 }
@@ -109,8 +109,33 @@ gcp_profile() {
 	fi
 }
 
-preexec() {
+function preexec() {
 	printf "\n"
+  cmd_start=$(($(print -P %D{%s%6.}) / 1000))
 }
 
-PS1=$'\n\n%{$reset_color%}%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(?.. %{$fg[red]%}[%?]%{$reset_color%})%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(aws_profile)$(terraform_version)$(go_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B>%b%{$reset_color%} '
+function precmd() {
+  if [ $cmd_start ]; then
+    local now=$(($(print -P %D{%s%6.}) / 1000))
+    local d_ms=$(($now - $cmd_start))
+    local d_s=$((d_ms / 1000))
+    local ms=$((d_ms % 1000))
+    local s=$((d_s % 60))
+    local m=$(((d_s / 60) % 60))
+    local h=$((d_s / 3600))
+
+    if   ((h > 0)); then cmd_time=${h}h${m}m
+    elif ((m > 0)); then cmd_time=${m}m${s}s
+    elif ((s > 9)); then cmd_time=${s}.$(printf %03d $ms | cut -c1-2)s # 12.34s
+    elif ((s > 0)); then cmd_time=${s}.$(printf %03d $ms)s # 1.234s
+    else cmd_time=${ms}ms
+    fi
+
+    unset cmd_start
+  else
+    # Clear previous result when hitting Return with no command to execute
+    unset cmd_time
+  fi
+}
+
+PS1=$'\n%{$reset_color%}$(if [ $cmd_time ]; then echo "%{$bg[white]%}%{$fg[black]%} $cmd_time %{$reset_color%}"; fi)%(?..%{$bg[red]%}%{$fg[white]%} %? %{$reset_color%})%{$reset_color%}\n\n\n%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(docker_version)$(aws_profile)$(terraform_version)$(python_version)$(go_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B>%b%{$reset_color%} '
