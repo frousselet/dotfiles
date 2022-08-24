@@ -138,4 +138,4 @@ function precmd() {
   fi
 }
 
-PS1=$'\n%{$reset_color%}$(if [ $cmd_time ]; then echo "%{$bg[white]%}%{$fg[black]%} $cmd_time %{$reset_color%}"; fi)%(?..%{$bg[red]%}%{$fg[white]%} %? %{$reset_color%})%{$reset_color%}\n\n\n%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(docker_version)$(aws_profile)$(terraform_version)$(python_version)$(go_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B>%b%{$reset_color%} '
+PS1=$'\n%{$reset_color%}$(if [ $cmd_time ]; then echo "%{$fg[white]%}($cmd_time) %{$reset_color%}"; fi)%(?..%{$fg[red]%}%BRETURNED %?%b%{$reset_color%})%{$reset_color%}\n\n\n%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(docker_version)$(aws_profile)$(terraform_version)$(python_version)$(go_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B>%b%{$reset_color%} '
