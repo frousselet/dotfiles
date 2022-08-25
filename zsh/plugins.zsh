@@ -42,6 +42,10 @@ if command -v go > /dev/null; then
     plugins+=golang
 fi
 
+if command -v gh > /dev/null; then
+    plugins+=gh
+fi
+
 if [[ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]
 then
     plugins+=zsh-autosuggestions
