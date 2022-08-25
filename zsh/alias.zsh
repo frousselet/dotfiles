@@ -32,6 +32,7 @@ fi
 ####
 
 alias git.t="git log --graph --all --decorate --oneline --date=short"
+alias git.c="git clean -Xf"
 
 ##########
 # LOCALSTACK AWS CLI

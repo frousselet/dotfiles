@@ -1,12 +1,3 @@
-docker_version() {
-	if command -v docker > /dev/null; then
-		if [ -f "Dockerfile" ]
-		then
-			echo " [docker:$(docker --version 2> /dev/null | cut -d ',' -f 1 | sed 's/Docker version //g')]"
-		fi
-	fi
-}
-
 node_version() {
 	if command -v node > /dev/null; then
 		if [ -f "package.json" ]
@@ -42,15 +33,6 @@ terraform_version() {
 		if [ $tf_file_count ]
 		then
 			echo " [terraform:$(terraform --version | head -n 1 | cut -d " " -f 2 | cut -c 2-)]"
-		fi
-	fi
-}
-
-vagrant_version() {
-	if command -v vagrant > /dev/null; then
-		if [ -f "Vagrantfile" ]
-		then
-			echo " [vagrant:$(vagrant --version 2> /dev/null | cut -d ' ' -f 2)]"
 		fi
 	fi
 }
@@ -126,16 +108,15 @@ function precmd() {
 
     if   ((h > 0)); then cmd_time=${h}h${m}m
     elif ((m > 0)); then cmd_time=${m}m${s}s
-    elif ((s > 9)); then cmd_time=${s}.$(printf %03d $ms | cut -c1-2)s # 12.34s
-    elif ((s > 0)); then cmd_time=${s}.$(printf %03d $ms)s # 1.234s
+    elif ((s > 9)); then cmd_time=${s}.$(printf %03d $ms | cut -c1-2)s
+    elif ((s > 0)); then cmd_time=${s}.$(printf %03d $ms)s
     else cmd_time=${ms}ms
     fi
 
     unset cmd_start
   else
-    # Clear previous result when hitting Return with no command to execute
     unset cmd_time
   fi
 }
 
-PS1=$'\n%{$reset_color%}$(if [ $cmd_time ]; then echo "%{$fg[white]%}($cmd_time) %{$reset_color%}"; fi)%(?..%{$fg[red]%}%BRETURNED %?%b%{$reset_color%})%{$reset_color%}\n\n\n%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(docker_version)$(aws_profile)$(terraform_version)$(python_version)$(go_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B>%b%{$reset_color%} '
+PS1=$'\n%{$reset_color%}$(if [ $cmd_time ]; then echo "%{$fg[cyan]%}($cmd_time) %{$reset_color%}"; fi)%(?..%{$fg[red]%}%BRETURNED %?%b%{$reset_color%})%{$reset_color%}\n\n\n%m : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[red]%}.%{$fg[cyan]%})$(git_branch)$(aws_profile)$(terraform_version)$(python_version)$(go_version)%{$reset_color%}\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B>%b%{$reset_color%} '
