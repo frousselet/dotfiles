@@ -23,4 +23,7 @@ then
   export PATH=$PATH:/Library/TeX/texbin
 fi
 
+export PATH="/opt/homebrew/bin:$PATH"
+eval $(/opt/homebrew/bin/brew shellenv)
+
 export HOMEBREW_NO_ENV_HINTS=true
