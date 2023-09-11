@@ -1,1 +1,1 @@
-source /Users/frousselet/.config/op/plugins.sh
+# source /Users/frousselet/.config/op/plugins.sh
