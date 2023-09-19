@@ -66,4 +66,4 @@ function preexec() {
 	printf "\n"
 }
 
-PS1=$'\n%B%{$fg[grey]%}---%b%{$reset_color%}\n%B%m%b : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[grey]%}.%{$fg[grey]%})$(git_branch)$(aws_profile)$(terraform_version)%{$reset_color%}%(?. %{$fg[grey]%}%B↪ %?%b. %{$fg[red]%}%B↪ %?%b)\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B->%b%{$reset_color%} '
+PS1=$'\n%B%{$fg[grey]%}---%b%{$reset_color%}\n%B%m%b : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[grey]%}.%{$fg[default]%})%B$(git_branch)$(aws_profile)$(terraform_version)%b%{$reset_color%}%(?. %{$fg[grey]%}%B↪ %?. %{$fg[red]%}%B↪ %?%b)\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B->%b%{$reset_color%} '
