@@ -16,7 +16,7 @@ git config --global user.name "François Rousselet"
 
 cd /home/$USER
 
-git clone https://github.com/frousselet/dotfiles.git .dotfiles
+# git clone https://github.com/frousselet/dotfiles.git .dotfiles
 rm -rf .zshrc
 ln -s .dotfiles/.zshrc .zshrc
 
