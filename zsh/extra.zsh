@@ -29,4 +29,10 @@ then
   eval $(/opt/homebrew/bin/brew shellenv)
 fi
 
+if [[ -d "/home/linuxbrew/.linuxbrew/bin" ]]
+then
+  export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+fi
+
 export HOMEBREW_NO_ENV_HINTS=true
