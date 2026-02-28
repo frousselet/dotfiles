@@ -43,40 +43,58 @@ link_file() {
 
 # ---
 
-if [ "$(uname -s)" != "Darwin" ]; then
-  error "This script only supports macOS"
+OS="$(uname -s)"
+if [ "$OS" != "Darwin" ] && [ "$OS" != "Linux" ]; then
+  error "Unsupported OS: $OS (macOS and Linux only)"
+  exit 1
+fi
+
+if [ "$OS" = "Linux" ] && [ ! -f /etc/debian_version ]; then
+  error "Only Debian/Ubuntu is supported on Linux"
   exit 1
 fi
 
 echo ""
-echo "=== Dotfiles Installer ==="
+echo "=== Dotfiles Installer ($OS) ==="
 echo ""
 
-# 1. Homebrew
-info "Checking Homebrew..."
-if ! command -v brew > /dev/null; then
-  info "Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [ "$OS" = "Darwin" ]; then
+  # 1. Homebrew
+  info "Checking Homebrew..."
+  if ! command -v brew > /dev/null; then
+    info "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  if [ -d "/opt/homebrew" ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    if [ -d "/opt/homebrew" ]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
   fi
+  success "Homebrew installed"
+
+  info "Updating Homebrew..."
+  brew update
+  success "Homebrew updated"
+
+  # 2. CLI packages
+  info "Installing CLI packages..."
+  brew install zsh git wget
+  success "CLI packages installed"
+
+  # 3. Cask apps
+  info "Installing cask apps..."
+  brew install --cask drawio rectangle tower netnewswire
+  success "Cask apps installed"
+
+else
+  # 1. APT packages
+  info "Updating apt..."
+  sudo apt-get update -qq
+  success "apt updated"
+
+  info "Installing packages..."
+  sudo apt-get install -y -qq zsh git wget curl
+  success "Packages installed"
 fi
-success "Homebrew installed"
-
-info "Updating Homebrew..."
-brew update
-success "Homebrew updated"
-
-# 2. CLI packages
-info "Installing CLI packages..."
-brew install zsh git wget
-success "CLI packages installed"
-
-# 3. Cask apps
-info "Installing cask apps..."
-brew install --cask drawio rectangle tower netnewswire
-success "Cask apps installed"
 
 # 4. Symlinks
 echo ""
