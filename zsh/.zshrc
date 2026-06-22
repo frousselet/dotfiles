@@ -24,6 +24,7 @@ source "$DOTCONFPATH/nvm.zsh"
 # ── External tool integrations ───────────────────────────────────────────
 source "$DOTCONFPATH/gcloud.zsh"
 source "$DOTCONFPATH/1password.zsh"
+source "$DOTCONFPATH/bitwarden.zsh"
 
 # ── oh-my-zsh ────────────────────────────────────────────────────────────
 # Declare the plugin list, then load the framework (extra.zsh sources
