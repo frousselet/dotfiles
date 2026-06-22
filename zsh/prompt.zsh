@@ -1,69 +1,46 @@
 terraform_version() {
-	if command -v terraform > /dev/null; then
-		tf_file_count="$(find .  -maxdepth 1 -type f -name '*.tf')"
-		if [ $tf_file_count ]
-		then
-			echo " [terraform:$(terraform --version | head -n 1 | cut -d " " -f 2 | cut -c 2-)]"
-		fi
-	fi
+	command -v terraform > /dev/null || return
+	local tf=(*.tf(N))
+	(( ${#tf} )) || return
+	echo " [terraform:$(terraform --version | head -n 1 | cut -d " " -f 2 | cut -c 2-)]"
 }
 
 git_branch() {
-	if command -v git > /dev/null; then
-		gb="$(git branch 2> /dev/null | grep '*' | sed 's/* //')"
-		if [ $gb ]
-		then
-			gs_M="$(git status --short 2> /dev/null | grep "^ M" | wc -l | sed 's/ //g' | sed 's/\n//g' | sed 's/0//g')"
-			gs_D="$(git status --short 2> /dev/null | grep "^ D" | wc -l | sed 's/ //g' | sed 's/\n//g' | sed 's/0//g')"
-			gs_U="$(git status --short 2> /dev/null | grep "^??" | wc -l | sed 's/ //g' | sed 's/\n//g' | sed 's/0//g')"
-			gs_A="$(git status --short 2> /dev/null | grep "^[A|M]" | wc -l | sed 's/ //g' | sed 's/\n//g' | sed 's/0//g')"
-			gs_P="$(git log origin/$gb..$gb 2> /dev/null | wc -l | sed 's/ //g' | sed 's/\n//g' | sed 's/0//g')"
-			if [ $gs_U ]
-			then
-				gb="$gb/+"
-			fi
-			if [ $gs_M ]
-			then
-				gb="$gb/~"
-			fi
-			if [ $gs_D ]
-			then
-				gb="$gb/-"
-			fi
-			if [ $gs_A ]
-			then
-				gb="$gb/⋯"
-			fi
-			if [ $gs_P ]
-			then
-				gb="$gb/↑"
-			fi
-			echo " [git:$gb]"
-		fi
+	command -v git > /dev/null || return
+
+	local branch
+	branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
+	[ -n "$branch" ] || return
+
+	# Single status call instead of one git invocation per category.
+	local st flags=""
+	st="$(git status --porcelain 2> /dev/null)"
+	grep -q '^??'   <<< "$st" && flags+="/+"
+	grep -q '^ M'   <<< "$st" && flags+="/~"
+	grep -q '^ D'   <<< "$st" && flags+="/-"
+	grep -q '^[AM]' <<< "$st" && flags+="/⋯"
+
+	# Ahead/behind vs the configured upstream (any remote, not just origin).
+	local counts
+	counts="$(git rev-list --left-right --count '@{upstream}...HEAD' 2> /dev/null)"
+	if [[ -n "$counts" ]]; then
+		(( ${counts[(w)2]} )) && flags+="/↑"  # commits ahead of upstream
+		(( ${counts[(w)1]} )) && flags+="/↓"  # commits behind upstream
 	fi
+
+	echo " [git:$branch$flags]"
 }
 
 aws_profile() {
-	if command -v aws > /dev/null; then
-		if [ $AWS_PROFILE ]
-		then
-			echo " [aws:$AWS_PROFILE]"
-		fi
-	fi
+	command -v aws > /dev/null || return
+	[[ -n "$AWS_PROFILE" ]] || return
+	echo " [aws:$AWS_PROFILE]"
 }
 
-gcp_profile() {
-	if command -v gcloud > /dev/null; then
-		gcp=$(gcloud config get-value core/project)
-		if [ $gcp ]
-		then
-			echo " [gcp:$gcp]"
-		fi
-	fi
-}
+# Print a blank line before each command's output. Registered as a hook (rather
+# than a bare preexec function) so it composes with plugins that also use one.
+autoload -U add-zsh-hook
+_blank_line_preexec() { printf "\n" }
+add-zsh-hook preexec _blank_line_preexec
 
-function preexec() {
-	printf "\n"
-}
-
-PS1=$'\n\n%B%{$fg[grey]%}---%b%{$reset_color%}\n%B%m%b : %(2~|⋯%{$reset_color%}/%1~|%~)%(!.%{$fg[grey]%}.%{$fg[default]%})%B$(git_branch)$(aws_profile)$(terraform_version)%b%{$reset_color%}%(?. %{$fg[grey]%}%B↪ %?. %{$fg[red]%}%B↪ %?%b)\n%(?.%{$reset_color%}.%{$fg[red]%})%(!.%{$fg[red]%}%B%n%{$reset_color%} .%{$reset_color%})%B->%b%{$reset_color%} '
+PS1=$'\n\n%B%F{240}---%f%b\n%B%m%b : %(2~|⋯/%1~|%~)%(!.%F{240}.%f)%B$(git_branch)$(aws_profile)$(terraform_version)%b%f%(?. %F{240}%B↪ %?. %F{red}%B↪ %?%b)\n%(?.%f%b.%F{red})%(!.%F{red}%B%n%f%b .%f)%B->%b%f '

@@ -60,7 +60,7 @@ fi
 ####
 
 batchrename() {
-  bash /Users/${USER}/.dotfiles/scripts/batch-rename.sh "$@"
+  bash "${DOTCONFPATH}/../scripts/batch-rename.sh" "$@"
 }
 
 wol() {

@@ -1,38 +1,32 @@
 # Things for the end...
-source $ZSH/oh-my-zsh.sh
-export GPG_TTY=$(tty)
+if [[ -f "$ZSH/oh-my-zsh.sh" ]]
+then
+  source "$ZSH/oh-my-zsh.sh"
+fi
+
+if command -v gpg > /dev/null; then
+  export GPG_TTY=$(tty)
+fi
 
 if [[ -f "$HOME/.cargo/env" ]]
 then
-  source $HOME/.cargo/env
+  source "$HOME/.cargo/env"
 fi
 
-autoload -U +X bashcompinit && bashcompinit
-
-if [[ -f "/opt/homebrew/bin/terraform" ]]
-then
-  complete -o nospace -C /opt/homebrew/bin/terraform terraform
+# bashcompinit is only needed for the terraform "complete -C" below, so we
+# load it (and the completion) only when terraform is actually installed —
+# and we resolve its path instead of hardcoding the Homebrew location, so it
+# works the same on macOS, Linuxbrew, etc.
+if command -v terraform > /dev/null; then
+  autoload -U +X bashcompinit && bashcompinit
+  complete -o nospace -C "$(command -v terraform)" terraform
 fi
 
-if command -v fuck > /dev/null; then
-  eval $(thefuck --alias)
+if command -v thefuck > /dev/null; then
+  eval "$(thefuck --alias)"
 fi
 
 if [[ -d "/Library/TeX/texbin" ]]
 then
   export PATH=$PATH:/Library/TeX/texbin
 fi
-
-if [[ -d "/opt/homebrew" ]]
-then
-  export PATH="/opt/homebrew/bin:$PATH"
-  eval $(/opt/homebrew/bin/brew shellenv)
-fi
-
-if [[ -d "/home/linuxbrew/.linuxbrew/bin" ]]
-then
-  export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-fi
-
-export HOMEBREW_NO_ENV_HINTS=true
