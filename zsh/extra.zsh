@@ -30,3 +30,9 @@ if [[ -d "/Library/TeX/texbin" ]]
 then
   export PATH=$PATH:/Library/TeX/texbin
 fi
+
+if [[ -d "$HOME/.local/bin" ]]
+then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
