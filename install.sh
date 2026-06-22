@@ -32,13 +32,34 @@ link_file() {
 
   mkdir -p "$(dirname "$dest")"
 
-  if [ -e "$dest" ]; then
+  if [ -e "$dest" ] || [ -L "$dest" ]; then
     mv "$dest" "${dest}.backup"
     info "Backed up $dest to ${dest}.backup"
   fi
 
   ln -s "$src" "$dest"
   success "$dest -> $src"
+}
+
+# Clone a git repo, or fast-forward it if it's already there (idempotent).
+clone_or_update() {
+  local repo="$1"
+  local dest="$2"
+  local name
+  name="$(basename "$dest")"
+
+  if [ -d "$dest/.git" ]; then
+    info "Updating $name..."
+    if git -C "$dest" pull --ff-only --quiet; then
+      success "$name updated"
+    else
+      info "$name: skipped update (local changes?)"
+    fi
+  else
+    info "Installing $name..."
+    git clone --depth=1 --quiet "$repo" "$dest"
+    success "$name installed"
+  fi
 }
 
 # ---
@@ -58,35 +79,34 @@ echo ""
 echo "=== Dotfiles Installer ($OS) ==="
 echo ""
 
+# 1. Package manager + base packages
 if [ "$OS" = "Darwin" ]; then
-  # 1. Homebrew
   info "Checking Homebrew..."
   if ! command -v brew > /dev/null; then
     info "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    if [ -d "/opt/homebrew" ]; then
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi
   fi
-  success "Homebrew installed"
+
+  # Make sure brew is on PATH for the rest of this script (Apple Silicon or Intel).
+  if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -x /usr/local/bin/brew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+  success "Homebrew ready"
 
   info "Updating Homebrew..."
   brew update
   success "Homebrew updated"
 
-  # 2. CLI packages
   info "Installing CLI packages..."
   brew install zsh git wget
   success "CLI packages installed"
 
-  # 3. Cask apps
   info "Installing cask apps..."
   brew install --cask drawio rectangle tower netnewswire
   success "Cask apps installed"
-
 else
-  # 1. APT packages
   info "Updating apt..."
   sudo apt-get update -qq
   success "apt updated"
@@ -95,6 +115,29 @@ else
   sudo apt-get install -y -qq zsh git wget curl
   success "Packages installed"
 fi
+
+# 2. oh-my-zsh (install or update)
+echo ""
+ZSH_DIR="$HOME/.oh-my-zsh"
+if [ -d "$ZSH_DIR/.git" ]; then
+  info "Updating oh-my-zsh..."
+  if git -C "$ZSH_DIR" pull --ff-only --quiet; then
+    success "oh-my-zsh updated"
+  else
+    info "oh-my-zsh: skipped update (local changes?)"
+  fi
+else
+  info "Installing oh-my-zsh..."
+  # KEEP_ZSHRC: don't touch our .zshrc. CHSH/RUNZSH: we handle the shell ourselves.
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  success "oh-my-zsh installed"
+fi
+
+# 3. Custom zsh plugins (install or update)
+ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH_DIR/custom}"
+clone_or_update https://github.com/zsh-users/zsh-autosuggestions     "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+clone_or_update https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 
 # 4. Symlinks
 echo ""
@@ -114,6 +157,23 @@ info "Creating zsh extension directories..."
 mkdir -p "$HOME/.zsh_extra/pre"
 mkdir -p "$HOME/.zsh_extra/post"
 success "Zsh extension directories ready"
+
+# 7. Default shell
+echo ""
+ZSH_BIN="$(command -v zsh)"
+if [ "${SHELL:-}" = "$ZSH_BIN" ]; then
+  success "zsh already the default shell"
+else
+  info "Setting zsh as default shell..."
+  if ! grep -q "^${ZSH_BIN}$" /etc/shells 2> /dev/null; then
+    echo "$ZSH_BIN" | sudo tee -a /etc/shells > /dev/null
+  fi
+  if chsh -s "$ZSH_BIN"; then
+    success "Default shell set to zsh (restart your session to apply)"
+  else
+    error "chsh failed — set it manually with: chsh -s $ZSH_BIN"
+  fi
+fi
 
 echo ""
 echo "=== Done ==="
