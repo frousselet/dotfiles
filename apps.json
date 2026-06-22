@@ -1,0 +1,48 @@
+{
+  "settings": {
+    "linux_prefer_default_package_manager": true,
+    "linux_fallback_to_brew": true
+  },
+  "packages": {
+    "apt": {
+      "git": {
+        "headless": true,
+        "linux": true,
+        "macos": false
+      }
+    },
+    "snap": {},
+    "brew": {
+      "tfenv": {
+        "headless": true,
+        "linux": true,
+        "macos": true
+      },
+      "git": {
+        "headless": true,
+        "linux": true,
+        "macos": true
+      },
+      "drawio": {
+        "headless": false,
+        "linux": false,
+        "macos": true
+      },
+      "rectangle": {
+        "headless": false,
+        "linux": false,
+        "macos": true
+      },
+      "tower": {
+        "headless": false,
+        "linux": false,
+        "macos": true
+      },
+      "netnewswire": {
+        "headless": false,
+        "linux": false,
+        "macos": true
+      }
+    }
+  }
+}
