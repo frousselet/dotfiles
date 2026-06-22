@@ -3,7 +3,8 @@ export DOTCONFPATH="$HOME/.dotfiles/zsh"
 # ── Machine-local pre hooks ──────────────────────────────────────────────
 # Sourced first so a given host can tweak env/PATH before anything else.
 if [[ -d "$HOME/.zsh_extra/pre" ]]; then
-    for file in "$HOME/.zsh_extra/pre/"*.zsh; do
+    # (N) = NULL_GLOB: no error when the directory is empty.
+    for file in "$HOME/.zsh_extra/pre/"*.zsh(N); do
         [[ -f "$file" ]] && source "$file"
     done
 fi
@@ -41,7 +42,8 @@ source "$DOTCONFPATH/prompt.zsh"
 # ── Machine-local post hooks ─────────────────────────────────────────────
 # Sourced last so a given host gets the final word.
 if [[ -d "$HOME/.zsh_extra/post" ]]; then
-    for file in "$HOME/.zsh_extra/post/"*.zsh; do
+    # (N) = NULL_GLOB: no error when the directory is empty.
+    for file in "$HOME/.zsh_extra/post/"*.zsh(N); do
         [[ -f "$file" ]] && source "$file"
     done
 fi
