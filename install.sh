@@ -161,28 +161,70 @@ pkg_install_brew() {
   fi
 }
 
+pkg_remove_apt() {
+  local p="$1"
+  dpkg -s "$p" > /dev/null 2>&1 || return 0
+  info "Uninstalling $p (apt)..."
+  sudo_run apt-get remove -y -qq "$p"
+  success "$p uninstalled (apt)"
+}
+
+pkg_remove_snap() {
+  local p="$1"
+  command -v snap > /dev/null || return 0
+  snap list "$p" > /dev/null 2>&1 || return 0
+  info "Uninstalling $p (snap)..."
+  sudo_run snap remove "$p"
+  success "$p uninstalled (snap)"
+}
+
+pkg_remove_brew() {
+  local p="$1"
+  if brew list "$p" > /dev/null 2>&1; then
+    info "Uninstalling $p (brew)..."
+    brew uninstall "$p"
+    success "$p uninstalled (brew)"
+  elif brew list --cask "$p" > /dev/null 2>&1; then
+    info "Uninstalling $p (brew cask)..."
+    brew uninstall --cask "$p"
+    success "$p uninstalled (brew cask)"
+  fi
+}
+
 # Install every package declared under .packages.<mgr> in apps.json that
 # applies to this OS, skipping GUI-only packages (headless:false) on a
 # headless host.
+# Reconcile the declared state for one manager against what's installed:
+#   <os>: true  => ensure installed (unless GUI-only on a headless host)
+#         false => ensure absent (uninstall if present)
+#         null  => not declared for this OS, leave alone
 install_from_json() {
   local mgr="$1" os="$2"
   local headless_now=0
   is_headless && headless_now=1
 
-  local name hl
-  while IFS=$'\t' read -r name hl; do
+  local name want hl
+  while IFS=$'\t' read -r name want hl; do
     [ -n "$name" ] || continue
-    if [ "$headless_now" = 1 ] && [ "$hl" = "false" ]; then
-      info "Skipping $name ($mgr): headless terminal"
-      continue
+    if [ "$want" = "true" ]; then
+      if [ "$headless_now" = 1 ] && [ "$hl" = "false" ]; then
+        info "Skipping $name ($mgr): headless terminal"
+        continue
+      fi
+      case "$mgr" in
+        apt) pkg_install_apt "$name" ;;
+        snap) pkg_install_snap "$name" ;;
+        brew) pkg_install_brew "$name" ;;
+      esac
+    elif [ "$want" = "false" ]; then
+      case "$mgr" in
+        apt) pkg_remove_apt "$name" ;;
+        snap) pkg_remove_snap "$name" ;;
+        brew) pkg_remove_brew "$name" ;;
+      esac
     fi
-    case "$mgr" in
-      apt) pkg_install_apt "$name" ;;
-      snap) pkg_install_snap "$name" ;;
-      brew) pkg_install_brew "$name" ;;
-    esac
   done < <(jq -r --arg os "$os" \
-    ".packages.\"$mgr\" // {} | to_entries[] | select(.value[\$os] == true) | \"\(.key)\t\(.value.headless)\"" \
+    ".packages.\"$mgr\" // {} | to_entries[] | \"\(.key)\t\(.value[\$os])\t\(.value.headless)\"" \
     "$APPS_JSON")
 }
 

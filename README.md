@@ -49,7 +49,8 @@ Packages are declared in [`apps.json`](apps.json), grouped by package manager:
 
 Per package:
 
-- `linux` / `macos` — whether the package applies to that OS.
+- `linux` / `macos` — desired state on that OS: `true` installs it, `false`
+  uninstalls it (if present). Omit the key to leave the package untouched.
 - `headless` — `false` means GUI-only: it's skipped on headless hosts (no
   display). Override detection with `HEADLESS=1` / `HEADLESS=0`.
 
