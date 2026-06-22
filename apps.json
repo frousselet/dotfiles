@@ -13,6 +13,36 @@
     },
     "snap": {},
     "brew": {
+      "ansible": {
+        "headless": true,
+        "linux": true,
+        "macos": true
+      },
+      "swiftbar": {
+        "headless": false,
+        "linux": false,
+        "macos": true
+      },
+      "font-jetbrains-mono-nerd-font": {
+        "headless": false,
+        "linux": true,
+        "macos": true
+      },
+      "sf-symbols": {
+        "headless": false,
+        "linux": false,
+        "macos": true
+      },
+      "gh": {
+        "headless": true,
+        "linux": true,
+        "macos": true
+      },
+      "exiftool": {
+        "headless": true,
+        "linux": true,
+        "macos": true
+      },
       "tfenv": {
         "headless": true,
         "linux": true,
@@ -26,22 +56,22 @@
       "drawio": {
         "headless": false,
         "linux": false,
-        "macos": true
+        "macos": false
       },
       "rectangle": {
         "headless": false,
         "linux": false,
-        "macos": true
+        "macos": false
       },
       "tower": {
         "headless": false,
         "linux": false,
-        "macos": true
+        "macos": false
       },
       "netnewswire": {
         "headless": false,
         "linux": false,
-        "macos": true
+        "macos": false
       }
     }
   }
